@@ -1,0 +1,8 @@
+---
+- name: Configure web server for beyond-diplegia
+  hosts: webserver
+  become: true
+  gather_facts: true
+
+  roles:
+    - webserver

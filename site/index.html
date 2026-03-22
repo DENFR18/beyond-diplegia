@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Denilsson — Né trop tôt. Jamais arrêté.</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;900&family=Playfair+Display:ital,wght@0,700;1,700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --purple: #7C3AED;
+      --indigo: #4F46E5;
+      --pink: #EC4899;
+      --orange: #F97316;
+      --teal: #06B6D4;
+      --green: #10B981;
+      --dark: #0F172A;
+      --dark2: #1E293B;
+      --light: #F8FAFC;
+      --text: #334155;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      color: var(--text);
+      overflow-x: hidden;
+    }
+
+    /* ─── HERO ─────────────────────────────────────────────── */
+    .hero {
+      min-height: 100vh;
+      background: linear-gradient(135deg, #0F172A 0%, #1E293B 30%, #312E81 65%, #4C1D95 100%);
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      overflow: hidden;
+    }
+
+    .blob {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(90px);
+      opacity: 0.25;
+      animation: floatBlob 9s ease-in-out infinite;
+    }
+    .blob-1 { width: 550px; height: 550px; background: var(--purple); top: -120px; left: -120px; animation-delay: 0s; }
+    .blob-2 { width: 420px; height: 420px; background: var(--pink);   bottom: -100px; right: -100px; animation-delay: 3s; }
+    .blob-3 { width: 320px; height: 320px; background: var(--teal);   top: 45%; left: 48%; transform: translate(-50%,-50%); animation-delay: 1.5s; }
+
+    @keyframes floatBlob {
+      0%, 100% { transform: translateY(0) scale(1); }
+      50%       { transform: translateY(-35px) scale(1.07); }
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 1;
+      max-width: 820px;
+      padding: 2rem;
+    }
+
+    .hero-tag {
+      display: inline-block;
+      background: rgba(124, 58, 237, 0.25);
+      border: 1px solid rgba(196, 181, 253, 0.4);
+      color: #C4B5FD;
+      padding: 0.45rem 1.3rem;
+      border-radius: 50px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      margin-bottom: 1.8rem;
+      animation: fadeInDown 0.9s ease both;
+    }
+
+    .hero h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(3rem, 10vw, 7rem);
+      font-weight: 700;
+      color: white;
+      line-height: 1.1;
+      margin-bottom: 1.8rem;
+      animation: fadeInUp 0.9s ease 0.2s both;
+    }
+
+    .hero h1 .gradient {
+      background: linear-gradient(135deg, #C084FC, #F472B6, #FB923C);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero-subtitle {
+      font-size: clamp(1rem, 2.5vw, 1.3rem);
+      color: #94A3B8;
+      font-weight: 300;
+      line-height: 1.8;
+      margin-bottom: 3rem;
+      animation: fadeInUp 0.9s ease 0.4s both;
+    }
+
+    .hero-cta {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+      animation: fadeInUp 0.9s ease 0.6s both;
+    }
+
+    .btn {
+      padding: 0.9rem 2.2rem;
+      border-radius: 50px;
+      font-size: 1rem;
+      font-weight: 600;
+      font-family: 'Poppins', sans-serif;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      cursor: pointer;
+      border: none;
+    }
+    .btn-primary {
+      background: linear-gradient(135deg, var(--purple), var(--pink));
+      color: white;
+      box-shadow: 0 10px 40px rgba(124, 58, 237, 0.4);
+    }
+    .btn-primary:hover { transform: translateY(-4px); box-shadow: 0 20px 60px rgba(124, 58, 237, 0.55); }
+    .btn-outline {
+      background: transparent;
+      color: white;
+      border: 2px solid rgba(255, 255, 255, 0.25);
+    }
+    .btn-outline:hover { background: rgba(255,255,255,0.08); transform: translateY(-4px); }
+
+    .scroll-hint {
+      position: absolute;
+      bottom: 2.5rem;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.6rem;
+      color: #475569;
+      font-size: 0.75rem;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      animation: scrollBounce 2.5s ease infinite;
+    }
+    .scroll-hint::after {
+      content: '';
+      width: 1.5px;
+      height: 45px;
+      background: linear-gradient(to bottom, #475569, transparent);
+    }
+
+    @keyframes scrollBounce {
+      0%, 100% { transform: translateX(-50%) translateY(0); }
+      50%       { transform: translateX(-50%) translateY(12px); }
+    }
+
+    /* ─── ANIMATIONS ────────────────────────────────────────── */
+    @keyframes fadeInUp   { from { opacity:0; transform:translateY(40px); } to { opacity:1; transform:translateY(0); } }
+    @keyframes fadeInDown { from { opacity:0; transform:translateY(-20px); } to { opacity:1; transform:translateY(0); } }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(45px);
+      transition: opacity 0.85s ease, transform 0.85s ease;
+    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+    .reveal-delay-1 { transition-delay: 0.15s; }
+    .reveal-delay-2 { transition-delay: 0.3s; }
+    .reveal-delay-3 { transition-delay: 0.45s; }
+    .reveal-delay-4 { transition-delay: 0.6s; }
+
+    /* ─── LAYOUT COMMUN ─────────────────────────────────────── */
+    section { padding: 7rem 2rem; }
+
+    .container { max-width: 1100px; margin: 0 auto; }
+
+    .section-label {
+      display: block;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      margin-bottom: 1rem;
+    }
+
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      font-weight: 700;
+      line-height: 1.2;
+      margin-bottom: 1.5rem;
+    }
+
+    .section-desc {
+      font-size: 1.1rem;
+      line-height: 1.85;
+      color: #64748B;
+      max-width: 580px;
+    }
+
+    /* ─── HISTOIRE ──────────────────────────────────────────── */
+    .histoire {
+      background: var(--dark);
+      color: white;
+    }
+    .histoire .section-label { color: #C084FC; }
+    .histoire .section-title { color: white; }
+    .histoire .section-desc  { color: #94A3B8; }
+
+    .timeline {
+      position: relative;
+      margin-top: 4.5rem;
+      padding-left: 2rem;
+    }
+
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 0; bottom: 0;
+      width: 2px;
+      background: linear-gradient(to bottom, var(--purple), var(--pink), var(--teal));
+    }
+
+    .timeline-item {
+      position: relative;
+      padding: 0 0 3.5rem 2.5rem;
+    }
+
+    .timeline-item::before {
+      content: '';
+      position: absolute;
+      left: -8px; top: 5px;
+      width: 18px; height: 18px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--purple), var(--pink));
+      box-shadow: 0 0 22px rgba(124, 58, 237, 0.7);
+    }
+
+    .timeline-year {
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: #C084FC;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      margin-bottom: 0.5rem;
+    }
+
+    .timeline-title {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: white;
+      margin-bottom: 0.6rem;
+    }
+
+    .timeline-text {
+      color: #94A3B8;
+      line-height: 1.8;
+      max-width: 600px;
+    }
+
+    /* ─── COMPRENDRE ────────────────────────────────────────── */
+    .comprendre { background: var(--light); }
+    .comprendre .section-label { color: var(--indigo); }
+
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1.5rem;
+      margin-top: 3.5rem;
+    }
+
+    .card {
+      background: white;
+      border-radius: 22px;
+      padding: 2.2rem;
+      box-shadow: 0 4px 30px rgba(0,0,0,0.06);
+      transition: transform 0.35s ease, box-shadow 0.35s ease;
+      border-top: 4px solid transparent;
+    }
+    .card:hover { transform: translateY(-10px); box-shadow: 0 24px 70px rgba(0,0,0,0.12); }
+
+    .card-1 { border-top-color: var(--purple); }
+    .card-2 { border-top-color: var(--pink); }
+    .card-3 { border-top-color: var(--teal); }
+    .card-4 { border-top-color: var(--orange); }
+
+    .card-icon  { font-size: 2.6rem; margin-bottom: 1.1rem; }
+    .card-title { font-size: 1.1rem; font-weight: 700; color: var(--dark); margin-bottom: 0.8rem; }
+    .card-text  { font-size: 0.93rem; color: #64748B; line-height: 1.75; }
+
+    /* ─── QUOTIDIEN ─────────────────────────────────────────── */
+    .quotidien {
+      background: linear-gradient(135deg, #1E1B4B 0%, #312E81 50%, #0F3460 100%);
+      color: white;
+    }
+    .quotidien .section-label { color: #67E8F9; }
+    .quotidien .section-title { color: white; }
+    .quotidien .section-desc  { color: #94A3B8; }
+
+    .pillars {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+      gap: 2rem;
+      margin-top: 3.5rem;
+    }
+
+    .pillar {
+      background: rgba(255,255,255,0.05);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 22px;
+      padding: 2.5rem;
+      transition: background 0.35s, transform 0.35s, border-color 0.35s;
+    }
+    .pillar:hover {
+      background: rgba(255,255,255,0.09);
+      transform: translateY(-6px);
+      border-color: rgba(255,255,255,0.22);
+    }
+
+    .pillar-icon  { font-size: 3rem; margin-bottom: 1.5rem; display: block; }
+    .pillar-title { font-size: 1.25rem; font-weight: 700; color: white; margin-bottom: 1rem; }
+    .pillar-text  { color: #94A3B8; line-height: 1.85; }
+
+    /* ─── MESSAGE ───────────────────────────────────────────── */
+    .message {
+      background: var(--dark);
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .message-glow {
+      position: absolute;
+      width: 700px; height: 700px;
+      background: radial-gradient(circle, rgba(124,58,237,0.18), transparent 70%);
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+
+    .message .container { position: relative; z-index: 1; }
+    .message .section-label { color: #F472B6; }
+
+    .quote {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.6rem, 4vw, 2.9rem);
+      font-weight: 700;
+      color: white;
+      line-height: 1.4;
+      margin: 2.5rem auto;
+      max-width: 820px;
+    }
+
+    .quote .gradient {
+      background: linear-gradient(135deg, #C084FC, #F472B6, #FB923C);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .message-body {
+      color: #94A3B8;
+      font-size: 1.05rem;
+      line-height: 1.95;
+      max-width: 700px;
+      margin: 0 auto 3rem;
+    }
+
+    .message-body strong { color: #C4B5FD; font-weight: 600; }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.8rem;
+      background: linear-gradient(135deg, rgba(124,58,237,0.25), rgba(236,72,153,0.25));
+      border: 1px solid rgba(196,181,253,0.3);
+      color: #C4B5FD;
+      padding: 0.85rem 2.2rem;
+      border-radius: 50px;
+      font-weight: 600;
+      font-size: 0.95rem;
+    }
+
+    /* ─── FOOTER ────────────────────────────────────────────── */
+    footer {
+      background: #020617;
+      color: #475569;
+      text-align: center;
+      padding: 2.5rem 1rem;
+      font-size: 0.9rem;
+    }
+    footer .accent { color: #C084FC; }
+
+    /* ─── RESPONSIVE ────────────────────────────────────────── */
+    @media (max-width: 768px) {
+      .hero-cta { flex-direction: column; align-items: center; }
+      .timeline { padding-left: 1.5rem; }
+      .cards-grid { grid-template-columns: 1fr; }
+      .pillars { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ═══════════════ HERO ═══════════════ -->
+  <section class="hero">
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+    <div class="blob blob-3"></div>
+
+    <div class="hero-content">
+      <div class="hero-tag">Mon histoire &middot; Ma réalité &middot; Ma force</div>
+      <h1>
+        Denilsson<br>
+        <span class="gradient">Né trop tôt.</span><br>
+        Jamais arrêté.
+      </h1>
+      <p class="hero-subtitle">
+        Né à 6 mois de grossesse, j'ai grandi avec la diplégie spastique,<br>
+        la paralysie cérébrale, la dyslexie et la dyspraxie.<br>
+        Ce n'est pas ce qui me définit — c'est ce qui m'a construit.
+      </p>
+      <div class="hero-cta">
+        <a href="#histoire" class="btn btn-primary">Découvrir mon parcours</a>
+        <a href="#message" class="btn btn-outline">Mon message</a>
+      </div>
+    </div>
+
+    <div class="scroll-hint">Défiler</div>
+  </section>
+
+  <!-- ═══════════════ HISTOIRE ═══════════════ -->
+  <section class="histoire" id="histoire">
+    <div class="container">
+      <div class="reveal">
+        <span class="section-label">Mon parcours</span>
+        <h2 class="section-title">Une naissance qui<br>a tout changé</h2>
+        <p class="section-desc">
+          Tout a commencé bien avant mes premiers pas. Une naissance prématurée
+          qui allait façonner chaque aspect de ma vie — et révéler une résilience
+          que je ne savais pas avoir.
+        </p>
+      </div>
+
+      <div class="timeline">
+        <div class="timeline-item reveal reveal-delay-1">
+          <div class="timeline-year">Le début</div>
+          <div class="timeline-title">Naissance à 6 mois</div>
+          <div class="timeline-text">
+            Je suis né à seulement 6 mois de grossesse, bien avant d'être prêt
+            à affronter le monde. Placé immédiatement en couveuse, ma vie
+            dépendait de machines et du dévouement des équipes médicales.
+          </div>
+        </div>
+
+        <div class="timeline-item reveal reveal-delay-2">
+          <div class="timeline-year">Les premiers mois</div>
+          <div class="timeline-title">Sous assistance respiratoire</div>
+          <div class="timeline-text">
+            Mes poumons n'étaient pas encore formés. L'assistance respiratoire
+            est devenue mon quotidien pendant de longues semaines. Chaque jour
+            était une victoire, chaque souffle une conquête.
+          </div>
+        </div>
+
+        <div class="timeline-item reveal reveal-delay-3">
+          <div class="timeline-year">Le diagnostic</div>
+          <div class="timeline-title">Diplégie spastique &amp; paralysie cérébrale</div>
+          <div class="timeline-text">
+            La prématurité avait laissé des traces sur mon cerveau en développement.
+            Le diagnostic est tombé : paralysie cérébrale avec diplégie spastique.
+            Une réalité à apprendre à accepter, puis à apprivoiser.
+          </div>
+        </div>
+
+        <div class="timeline-item reveal reveal-delay-4">
+          <div class="timeline-year">Plus tard</div>
+          <div class="timeline-title">Dyslexie &amp; dyspraxie découvertes</div>
+          <div class="timeline-text">
+            À travers la scolarité, d'autres défis se sont révélés : la dyslexie
+            et la dyspraxie. Des obstacles supplémentaires dans un monde
+            qui n'est pas toujours conçu pour fonctionner autrement.
+          </div>
+        </div>
+
+        <div class="timeline-item reveal">
+          <div class="timeline-year">Aujourd'hui</div>
+          <div class="timeline-title">Étudiant en Mastère DevOps</div>
+          <div class="timeline-text">
+            Malgré tout — ou grâce à tout — je suis aujourd'hui étudiant en
+            Mastère DevOps, déployant des infrastructures cloud, orchestrant
+            des clusters Kubernetes, et construisant l'avenir à ma façon.
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════ COMPRENDRE ═══════════════ -->
+  <section class="comprendre" id="comprendre">
+    <div class="container">
+      <div class="reveal">
+        <span class="section-label">Pour mieux comprendre</span>
+        <h2 class="section-title">Mes conditions,<br>expliquées simplement</h2>
+        <p class="section-desc">
+          Ces mots peuvent paraître complexes. Voici ce qu'ils signifient
+          vraiment dans la réalité de quelqu'un qui les vit au quotidien.
+        </p>
+      </div>
+
+      <div class="cards-grid">
+        <div class="card card-1 reveal reveal-delay-1">
+          <div class="card-icon">🧠</div>
+          <div class="card-title">Paralysie cérébrale</div>
+          <div class="card-text">
+            Une lésion du cerveau en développement, souvent due à la prématurité.
+            Elle affecte le contrôle des mouvements et la posture. Ce n'est pas
+            une maladie évolutive — c'est une condition permanente avec laquelle
+            on apprend à vivre et à s'adapter.
+          </div>
+        </div>
+
+        <div class="card card-2 reveal reveal-delay-2">
+          <div class="card-icon">🦵</div>
+          <div class="card-title">Diplégie spastique</div>
+          <div class="card-text">
+            Une forme de paralysie cérébrale qui touche principalement les membres
+            inférieurs. Les muscles sont trop tendus (spasticité), ce qui rend
+            la marche et les mouvements plus difficiles et plus fatigants.
+          </div>
+        </div>
+
+        <div class="card card-3 reveal reveal-delay-3">
+          <div class="card-icon">📖</div>
+          <div class="card-title">Dyslexie</div>
+          <div class="card-text">
+            Un trouble d'apprentissage qui impacte la lecture et l'écriture.
+            Le cerveau traite les lettres et les mots différemment. Ce n'est
+            pas un manque d'intelligence — c'est une façon autre de
+            décoder l'information écrite.
+          </div>
+        </div>
+
+        <div class="card card-4 reveal reveal-delay-4">
+          <div class="card-icon">🤝</div>
+          <div class="card-title">Dyspraxie</div>
+          <div class="card-text">
+            Un trouble de la coordination et de la planification des gestes.
+            Les automatismes que la plupart acquièrent naturellement demandent
+            un effort conscient et constant. Chaque mouvement est une
+            intention délibérée.
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════ QUOTIDIEN ═══════════════ -->
+  <section class="quotidien" id="quotidien">
+    <div class="container">
+      <div class="reveal">
+        <span class="section-label">Ma réalité</span>
+        <h2 class="section-title">Ce que ça veut<br>dire au quotidien</h2>
+        <p class="section-desc">
+          Vivre avec un handicap, c'est naviguer chaque jour dans un monde
+          pensé par et pour d'autres. Voici ma réalité, sans filtre.
+        </p>
+      </div>
+
+      <div class="pillars">
+        <div class="pillar reveal reveal-delay-1">
+          <span class="pillar-icon">🚶</span>
+          <div class="pillar-title">La mobilité</div>
+          <div class="pillar-text">
+            Marcher demande une énergie que beaucoup ne soupçonnent pas.
+            Chaque trajet est calculé, chaque escalier est une décision.
+            Ce n'est pas une limite — c'est une organisation différente
+            de l'espace et du corps.
+          </div>
+        </div>
+
+        <div class="pillar reveal reveal-delay-2">
+          <span class="pillar-icon">💡</span>
+          <div class="pillar-title">La compréhension</div>
+          <div class="pillar-text">
+            Mon cerveau traite l'information à sa propre vitesse, à sa propre façon.
+            Parfois différemment, parfois plus lentement. Mais ce même cerveau
+            apprend à déployer des infrastructures cloud et à orchestrer
+            des systèmes distribués complexes.
+          </div>
+        </div>
+
+        <div class="pillar reveal reveal-delay-3">
+          <span class="pillar-icon">👁️</span>
+          <div class="pillar-title">Le regard des autres</div>
+          <div class="pillar-text">
+            C'est peut-être le plus difficile. Les regards dans la rue,
+            les suppositions sur mes capacités, les pitié non demandées.
+            Apprendre à exister pleinement malgré ça, c'est un travail
+            de chaque jour.
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════ MESSAGE ═══════════════ -->
+  <section class="message" id="message">
+    <div class="message-glow"></div>
+    <div class="container">
+      <div class="reveal">
+        <span class="section-label">Ce que je veux te dire</span>
+
+        <div class="quote">
+          Un handicap ne définit pas<br>
+          <span class="gradient">ce que tu peux accomplir.</span><br>
+          Il redéfinit comment tu y arrives.
+        </div>
+
+        <p class="message-body">
+          Je suis né à 6 mois. J'ai grandi avec des muscles trop tendus,
+          un cerveau qui traite les mots autrement, et des gestes qui demandent
+          le double d'efforts. Et aujourd'hui, je construis des infrastructures cloud
+          sur Azure et AWS, j'orchestre des clusters Kubernetes,
+          je code des pipelines CI/CD.
+          <br><br>
+          <strong>Pas malgré mon handicap. Avec lui.</strong> Parce qu'il m'a appris
+          à persévérer là où d'autres abandonnent, à trouver des chemins
+          alternatifs quand la route principale est bloquée, et à ne jamais
+          réduire mes ambitions à ce que les autres imaginent pour moi.
+          <br><br>
+          Si tu vis avec un handicap : tu n'as pas à te justifier,
+          ni à prouver ta valeur. Tu es déjà suffisant.
+          <br>
+          Si tu ne vis pas avec un handicap : regarde au-delà de ce que tu vois.
+        </p>
+
+        <div class="badge">
+          <span>⚡</span>
+          Denilsson — Étudiant Mastère DevOps, SUP DE VINCI
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════ FOOTER ═══════════════ -->
+  <footer>
+    <p>Fait avec <span class="accent">♥</span> et beaucoup de résilience &middot; Denilsson</p>
+  </footer>
+
+  <script>
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) entry.target.classList.add('visible');
+      });
+    }, { threshold: 0.12 });
+
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+  </script>
+
+</body>
+</html>

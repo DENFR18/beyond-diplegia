@@ -1,0 +1,98 @@
+name: Deploy beyond-diplegia
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  # ─── 1. Terraform ────────────────────────────────────────────────────────────
+  terraform:
+    name: Provision Infrastructure
+    runs-on: ubuntu-latest
+
+    outputs:
+      ec2_ip: ${{ steps.tf_output.outputs.ec2_ip }}
+
+    env:
+      AWS_ACCESS_KEY_ID:     ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      AWS_DEFAULT_REGION:    eu-west-3
+      TF_VAR_public_key:     ${{ secrets.EC2_SSH_PUBLIC_KEY }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.7.0
+          terraform_wrapper: false
+
+      - name: Terraform Init
+        working-directory: terraform
+        run: terraform init
+
+      - name: Terraform Validate
+        working-directory: terraform
+        run: terraform validate
+
+      - name: Terraform Plan
+        working-directory: terraform
+        run: terraform plan -out=tfplan
+
+      - name: Terraform Apply
+        working-directory: terraform
+        run: terraform apply -auto-approve tfplan
+
+      - name: Get EC2 IP
+        id: tf_output
+        working-directory: terraform
+        run: echo "ec2_ip=$(terraform output -raw ec2_public_ip)" >> $GITHUB_OUTPUT
+
+  # ─── 2. Ansible ──────────────────────────────────────────────────────────────
+  ansible:
+    name: Configure & Deploy Site
+    runs-on: ubuntu-latest
+    needs: terraform
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install Ansible
+        run: |
+          pip install --upgrade pip
+          pip install ansible
+
+      - name: Setup SSH key
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.EC2_SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H ${{ needs.terraform.outputs.ec2_ip }} >> ~/.ssh/known_hosts
+
+      - name: Generate dynamic inventory
+        run: |
+          cat > ansible/inventory/hosts.ini << EOF
+          [webserver]
+          ${{ needs.terraform.outputs.ec2_ip }} ansible_user=ubuntu ansible_ssh_private_key_file=~/.ssh/id_rsa
+          EOF
+
+      - name: Wait for EC2 to be ready
+        run: |
+          echo "Waiting for EC2 SSH to be available..."
+          timeout 120 bash -c \
+            "until ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa ubuntu@${{ needs.terraform.outputs.ec2_ip }} 'echo ready'; do sleep 5; done"
+
+      - name: Run Ansible playbook
+        working-directory: ansible
+        run: |
+          ansible-playbook playbook.yml \
+            -i inventory/hosts.ini \
+            --private-key ~/.ssh/id_rsa \
+            -u ubuntu
+
+      - name: Print site URL
+        run: echo "Site disponible sur http://${{ needs.terraform.outputs.ec2_ip }}"
