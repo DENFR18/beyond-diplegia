@@ -57,7 +57,7 @@ resource "aws_route_table_association" "public" {
 # ─── Security Group ───────────────────────────────────────────────────────────
 
 resource "aws_security_group" "web" {
-  name   = "sg-${local.name}"
+  name   = "secgrp-${local.name}"
   vpc_id = aws_vpc.main.id
 
   ingress {
