@@ -75,3 +75,36 @@
     line: "\tserver_tokens off;"
     insertafter: "http {"
   notify: Reload nginx
+
+# ─── Fail2ban ─────────────────────────────────────────────────────────────────
+
+- name: Install fail2ban
+  apt:
+    name: fail2ban
+    state: present
+
+- name: Deploy fail2ban config
+  copy:
+    dest: /etc/fail2ban/jail.local
+    owner: root
+    group: root
+    mode: "0644"
+    content: |
+      [DEFAULT]
+      bantime  = 1h
+      findtime = 10m
+      maxretry = 5
+      ignoreip = 127.0.0.1/8
+
+      [sshd]
+      enabled  = true
+      port     = ssh
+      logpath  = /var/log/auth.log
+      maxretry = 3
+  notify: Restart fail2ban
+
+- name: Enable and start fail2ban
+  service:
+    name: fail2ban
+    state: started
+    enabled: true
