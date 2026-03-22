@@ -126,7 +126,11 @@ resource "aws_instance" "web" {
 # ─── Elastic IP ───────────────────────────────────────────────────────────────
 
 resource "aws_eip" "web" {
-  instance = aws_instance.web.id
-  domain   = "vpc"
-  tags     = merge(local.tags, { Name = "eip-${local.name}" })
+  domain = "vpc"
+  tags   = merge(local.tags, { Name = "eip-${local.name}" })
+}
+
+resource "aws_eip_association" "web" {
+  instance_id   = aws_instance.web.id
+  allocation_id = aws_eip.web.id
 }
