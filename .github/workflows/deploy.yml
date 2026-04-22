@@ -86,7 +86,8 @@ jobs:
         uses: SonarSource/sonarqube-scan-action@v5
         continue-on-error: true
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN:   ${{ secrets.GITHUB_TOKEN }}
+          SONAR_HOST_URL: https://sonarcloud.io
 
   # ─── 2. Docker Build & Scan ──────────────────────────────────────────────────
   docker-build:
