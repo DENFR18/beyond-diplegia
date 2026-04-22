@@ -103,6 +103,12 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      # GHCR exige un nom d'image en minuscules ; on lowercase le owner
+      - name: Compute image name (lowercase)
+        run: |
+          OWNER_LC="${GITHUB_REPOSITORY_OWNER,,}"
+          echo "IMAGE=ghcr.io/${OWNER_LC}/beyond-diplegia" >> $GITHUB_ENV
+
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
@@ -112,7 +118,7 @@ jobs:
           context: .
           push: false
           load: true
-          tags: ghcr.io/${{ github.repository_owner }}/beyond-diplegia:${{ github.sha }}
+          tags: ${{ env.IMAGE }}:${{ github.sha }}
           cache-from: type=gha
 
       # ── Trivy : scan de l'image Docker avant push ─────────────────────────────
@@ -120,7 +126,7 @@ jobs:
         uses: aquasecurity/trivy-action@v0.36.0
         with:
           scan-type: image
-          image-ref: ghcr.io/${{ github.repository_owner }}/beyond-diplegia:${{ github.sha }}
+          image-ref: ${{ env.IMAGE }}:${{ github.sha }}
           format: sarif
           output: trivy-image.sarif
           severity: CRITICAL
@@ -148,8 +154,8 @@ jobs:
           context: .
           push: true
           tags: |
-            ghcr.io/${{ github.repository_owner }}/beyond-diplegia:${{ github.sha }}
-            ghcr.io/${{ github.repository_owner }}/beyond-diplegia:latest
+            ${{ env.IMAGE }}:${{ github.sha }}
+            ${{ env.IMAGE }}:latest
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
