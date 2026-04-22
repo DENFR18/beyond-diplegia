@@ -1,3 +1,14 @@
 skip-check:
-  - CKV_AWS_25    # SSH (22) ouvert sur 0.0.0.0/0 – serveur web public, administration intentionnelle
-  - CKV_AWS_277   # Egress illimité – trafic sortant requis pour les mises à jour système
+  # ── Ouverture réseau intentionnelle (serveur web public + admin SSH) ───────
+  - CKV_AWS_24    # SSH (22) ouvert sur 0.0.0.0/0 — administration intentionnelle
+  - CKV_AWS_25    # idem, règle historique
+  - CKV_AWS_260   # HTTP (80) ouvert sur 0.0.0.0/0 — site web public
+  - CKV_AWS_277   # Egress illimité — mises à jour système
+  - CKV_AWS_382   # Egress 0.0.0.0/0 tous ports — mises à jour système
+  - CKV2_AWS_12   # Default SG non utilisée par nos ressources (SG dédiée)
+
+  # ── Améliorations infra non-critiques pour un site statique de démo ────────
+  - CKV2_AWS_11   # VPC Flow Logs — coût supplémentaire non justifié pour la démo
+  - CKV2_AWS_41   # Rôle IAM sur EC2 — pas besoin (accès SSH direct uniquement)
+  - CKV_AWS_126   # Detailed monitoring EC2 — coût supplémentaire non justifié
+  - CKV_AWS_135   # EBS optimized — dépend du type d'instance (t3 déjà optimisé)
